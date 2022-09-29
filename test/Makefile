@@ -17,18 +17,20 @@ LIBS := -lfoo
 # LINK := ld
 LINK := gcc
 
-# HEADERS := $(wildcard *.h)
+HEADERS := $(wildcard *.h)
 # patsubst = Pattern substitution?
-# OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
+OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
 
-# %.o: %.c $(HEADERS)
-#	$(CC) $(CFLAGS) -c $<
-# 	$(CC) $(CFLAGS) $(CPPFLAGS) $(INCS) -o $@ -c $<
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $<
 
-$(MAIN): main.c
+$(MAIN): $(OBJECTS)
 	rm -f libfoo.*
 	cp ../src/libfoo.* .
-	$(CC) libfoo.a main.c -o $@
+	$(LINK) libfoo.a $(OBJECTS) -o $@
+
+# If all libraries are in the lib path:
+#	$(LINK) $(LIBS) $(OBJECTS) -o $@
 
 clean:
 	@$(RM) $(MAIN) $(OBJECTS)
