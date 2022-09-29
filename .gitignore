@@ -52,4 +52,7 @@ Mkfile.old
 dkms.conf
 
 .DS_Store
+libfoo.a
+test/libfoo.*
+test/test
 

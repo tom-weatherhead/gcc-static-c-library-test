@@ -1,7 +1,7 @@
 # See 'The GNU Make Manual' at
 # https://www.gnu.org/software/make/manual/make.html
 
-MAIN := atrocity
+MAIN := test
 # all:: $(MAIN)
 all: $(MAIN)
 
@@ -12,20 +12,23 @@ RM := rm -f
 CFLAGS := -Wall
 # -lc links in the standard C library.
 # -lm links in the math library
-LIBS := -lc
+# LIBS := -lc
+LIBS := -lfoo
 # LINK := ld
 LINK := gcc
 
-HEADERS := $(wildcard *.h)
+# HEADERS := $(wildcard *.h)
 # patsubst = Pattern substitution?
-OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
+# OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
 
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $<
+# %.o: %.c $(HEADERS)
+#	$(CC) $(CFLAGS) -c $<
 # 	$(CC) $(CFLAGS) $(CPPFLAGS) $(INCS) -o $@ -c $<
 
-$(MAIN): $(OBJECTS)
-	$(LINK) $(LIBS) -o $@ $(OBJECTS)
+$(MAIN): main.c
+	rm -f libfoo.*
+	cp ../src/libfoo.* .
+	$(CC) libfoo.a main.c -o $@
 
 clean:
 	@$(RM) $(MAIN) $(OBJECTS)
