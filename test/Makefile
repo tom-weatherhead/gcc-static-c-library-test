@@ -13,10 +13,11 @@ CFLAGS := -Wall
 # -lc links in the standard C library.
 # -lm links in the math library
 # LIBS := -lc
-LIBS := -lfoo
+# LIBS := -lfoo
 # LINK := ld
 LINK := gcc
 
+LIBS := $(wildcard *.a)
 HEADERS := $(wildcard *.h)
 # patsubst = Pattern substitution?
 OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
@@ -25,12 +26,13 @@ OBJECTS := $(patsubst %.c,%.o,$(wildcard *.c))
 	$(CC) $(CFLAGS) -c $<
 
 $(MAIN): $(OBJECTS)
-	rm -f libfoo.*
-	cp ../src/libfoo.* .
-	$(LINK) libfoo.a $(OBJECTS) -o $@
+	$(LINK) $(LIBS) $(OBJECTS) -o $@
 
-# If all libraries are in the lib path:
-#	$(LINK) $(LIBS) $(OBJECTS) -o $@
+# If libfoo.a is in the lib path, then refer to -lfoo instead of libfoo.a
 
 clean:
+	rm -f libfoo.*
+	cp ../src/libfoo.* .
 	@$(RM) $(MAIN) $(OBJECTS)
+
+# Do we need the @ in front of the $(RM) above?
